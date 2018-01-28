@@ -30,18 +30,26 @@ True
 >>> not_in_deck = [True for card in hand if card not in deck]
 >>> all(not_in_deck)
 True
->>> hand = ['A♠', '2♠', '3♠']
->>> show_hand(hand)
+>>> hand = ['A♠', '2♠', '3♠'] 
+>>> show_hand(hand) # Test show_hand 1
 3 cards: A♠, 2♠, 3♠
 >>> hand = ['A♠']
->>> show_hand(hand)
+>>> show_hand(hand) # Test show_hand 2
 1 card: A♠
-
+>>> show_points(hand)  # Test show_points 1
+1
+>>> hand = ['A♠', '2♠', '3♠']
+>>> show_points(hand) # Test show_points 2
+6
+>>> hand = ['J♠', 'K♠', '3♠']
+>>> show_points(hand)   # Test show_points 3
+23
 '''
 
 
 
 import random
+import re
 from random import shuffle
 # from random import shuffle as shuffle_deck
 
@@ -62,12 +70,15 @@ def create_deck():
 
 
 def hit(deck):
+    ''' This function get one card of top of the deck and remove it.'''
+
     #card = random.choice(deck)
     #import ipdb; ipdb.set_trace()
     return deck.pop(0)
 
 
 def show_hand(hand):
+    ''' Show all cards on the hands. '''
     qty_cards = len(hand)
     if qty_cards >= 2:
         msg = "{} cards: {}"
@@ -78,12 +89,28 @@ def show_hand(hand):
     #import ipdb; ipdb.set_trace()
     print(msg.format(qty_cards,cards))
 
+def show_points(hand):
+    ''' Calculate and show the points of the hands.'''
+    points = 0
+    for card in hand:
+        pattern  = re.compile("[2-9]")
+        match = pattern.match(card)
+        if card.find("A") == 0:
+            points += 1
+        elif match:
+            number = int(match.group(0))
+            points += number
+        elif re.search("[K,J,Q]", card):
+            points += 10
+
+    return points
+
 if __name__=="__main__":
     deck = create_deck()
     #import ipdb; ipdb.set_trace()
     shuffle(deck)
     print(deck)
-    hand = [hit(deck) for _ range(2)]
+    hand = [hit(deck) for _ in range(3)]
     #hand.append(hit(deck))
     #hand.append(hit(deck))
     #hand.append(hit(deck))
@@ -91,6 +118,8 @@ if __name__=="__main__":
     #card = hit(deck)
     #print(hand)
     show_hand(hand)
+    points = show_points(hand)
+    print("Points: {}".format(points))
     print('*' * 20)
 
 
