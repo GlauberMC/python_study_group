@@ -37,13 +37,17 @@ True
 >>> show_hand(hand) # Test show_hand 2
 1 card: A♠
 >>> show_points(hand)  # Test show_points 1
-1
+Points: 1
 >>> hand = ['A♠', '2♠', '3♠']
 >>> show_points(hand) # Test show_points 2
-6
+Points: 6
 >>> hand = ['J♠', 'K♠', '3♠']
 >>> show_points(hand)   # Test show_points 3
-23
+Points: 23
+>>> show_money() # Test show_money
+Money: R$ 2000.00
+
+
 '''
 
 
@@ -51,6 +55,7 @@ True
 import random
 import re
 from random import shuffle
+from decimal import Decimal
 # from random import shuffle as shuffle_deck
 
 def create_deck():
@@ -103,23 +108,24 @@ def show_points(hand):
         elif re.search("[K,J,Q]", card):
             points += 10
 
-    return points
+    print("Points: {}".format(points))
+
+def show_money():
+    print("Money: R$ {:.2f}".format(MONEY))
+
+MONEY = Decimal('2000.0')
+DECK = create_deck()
+HAND = [hit(DECK) for _ in range(3)]
+
 
 if __name__=="__main__":
-    deck = create_deck()
-    #import ipdb; ipdb.set_trace()
-    shuffle(deck)
-    print(deck)
-    hand = [hit(deck) for _ in range(3)]
-    #hand.append(hit(deck))
-    #hand.append(hit(deck))
-    #hand.append(hit(deck))
-    #hand.append(hit(deck))
-    #card = hit(deck)
-    #print(hand)
-    show_hand(hand)
-    points = show_points(hand)
-    print("Points: {}".format(points))
+    
+    #import ipdb; ipdb.set_trace()    
+    shuffle(DECK)
+    print(DECK)    
+    show_hand(HAND)
+    show_points(HAND)
+    show_money()
     print('*' * 20)
 
 
