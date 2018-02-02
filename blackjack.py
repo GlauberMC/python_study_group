@@ -51,6 +51,7 @@ Money: R$ 2000.00
 >>> show_money()
 Money: R$ 1900.00
 >>> #bet(30) #Test bet raise Exception
+>>> # surrender() # Test surrender raise
 
 '''
 
@@ -126,15 +127,21 @@ def bet(coin):
         return coin
     return None
 
+def surrender():
+    print("Finish with...")
+    show_points(HAND)
+    raise SystemExit
+
 MONEY = Decimal('2000.0')
 DECK = create_deck()
+shuffle(DECK)
 HAND = [hit(DECK) for _ in range(3)]
 
 
 if __name__=="__main__":
     
     #import ipdb; ipdb.set_trace()    
-    shuffle(DECK)
+    
     print(DECK)    
     show_hand(HAND)
     show_points(HAND)
@@ -145,5 +152,7 @@ if __name__=="__main__":
         print(e)
     show_money()
     print('*' * 20)
+    HAND.append(hit(DECK))
+    surrender()
 
 
